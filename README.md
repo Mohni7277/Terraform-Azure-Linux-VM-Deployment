@@ -30,9 +30,9 @@ This Terraform configuration deploys a Linux virtual machine (VM) in Microsoft A
 1. *Clone the repository*:
    bash
 
-   git clone (<repository-url>)
+   git clone (repository-url)
    
-   cd (<repository-directory>)
+   cd (repository-directory)
    
 
 3. *Initialize Terraform*:
@@ -56,7 +56,7 @@ This Terraform configuration deploys a Linux virtual machine (VM) in Microsoft A
 9. *Connect to VM* (after deployment completes):
    bash
 
-   ssh -i azurekey mohni@(<public-ip>)
+   ssh -i azurekey mohni@(public-ip)
    
 
 ## Configuration
