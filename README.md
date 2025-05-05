@@ -1,5 +1,5 @@
 # Terraform-linux
-Terraform Azure VM Deployment
+**Terraform Azure VM Deployment**
 This Terraform configuration deploys a Linux virtual machine (VM) in Microsoft Azure with SSH access and basic configurations.
 
 Features
