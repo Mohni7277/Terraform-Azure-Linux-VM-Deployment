@@ -1,129 +1,119 @@
-# Terraform-linux
-**Terraform Azure VM Deployment**
+# Terraform Azure VM Deployment
+
 This Terraform configuration deploys a Linux virtual machine (VM) in Microsoft Azure with SSH access and basic configurations.
 
-Features
-Creates a complete VM environment including:
+## Features
 
-Resource group
+- Creates a complete VM environment including:
+  - Resource group
+  - Virtual network and subnet
+  - Network security group with SSH rule
+  - Public IP address
+  - Network interface
+- Ubuntu 22.04 LTS VM
+- SSH key authentication
+- Optional setup script provisioning
+- Outputs connection information
 
-Virtual network and subnet
+## Prerequisites
 
-Network security group with SSH rule
+1. *Azure Account*: Active Azure subscription
+2. *Terraform*: v1.0+ installed
+3. *Azure CLI*: Installed and logged in (az login)
+4. *SSH Key Pair*: Existing key pair or generate new ones:
+   bash
+   ssh-keygen -t rsa -b 4096 -f azurekey
+   
 
-Public IP address
+## Deployment Steps
 
-Network interface
+1. *Clone the repository*:
+   bash
+   git clone <repository-url>
+   cd <repository-directory>
+   
 
-Ubuntu 22.04 LTS VM
+2. *Initialize Terraform*:
+   bash
+   terraform init
+   
 
-SSH key authentication
+3. *Review execution plan*:
+   bash
+   terraform plan
+   
 
-Optional setup script provisioning
+4. *Deploy infrastructure*:
+   bash
+   terraform apply
+   
 
-Outputs connection information
+5. *Connect to VM* (after deployment completes):
+   bash
+   ssh -i azurekey mohni@<public-ip>
+   
 
-Prerequisites
-Azure Account: Active Azure subscription
+## Configuration
 
-Terraform: v1.0+ installed
+### Main Variables
 
-Azure CLI: Installed and logged in (az login)
+- location: Azure region (default: "Central India")
+- vm_size: VM instance size (default: "Standard_B1s")
+- admin_username: SSH login username (default: "mohni")
+- ssh_public_key: Path to public key file (default: "azurekey.pub")
 
-SSH Key Pair: Existing key pair or generate new ones:
+### Optional Customization
 
-bash
-ssh-keygen -t rsa -b 4096 -f azurekey
-Deployment Steps
-Clone the repository:
+1. *VM Configuration*:
+   - Modify vm_size in main.tf for different instance types
+   - Change source_image_reference for different OS images
 
-bash
-git clone <repository-url>
-cd <repository-directory>
-Initialize Terraform:
+2. *Network Configuration*:
+   - Adjust address_space and address_prefixes in VNet/subnet
+   - Modify NSG rules in azurerm_network_security_group resource
 
-bash
-terraform init
-Review execution plan:
+3. *Provisioning*:
+   - Edit setup.sh for custom post-deployment configuration
+   - Add additional provisioner blocks as needed
 
-bash
-terraform plan
-Deploy infrastructure:
+## Outputs
 
-bash
-terraform apply
-Connect to VM (after deployment completes):
-
-bash
-ssh -i azurekey mohni@<public-ip>
-Configuration
-Main Variables
-location: Azure region (default: "Central India")
-
-vm_size: VM instance size (default: "Standard_B1s")
-
-admin_username: SSH login username (default: "mohni")
-
-ssh_public_key: Path to public key file (default: "azurekey.pub")
-
-Optional Customization
-VM Configuration:
-
-Modify vm_size in main.tf for different instance types
-
-Change source_image_reference for different OS images
-
-Network Configuration:
-
-Adjust address_space and address_prefixes in VNet/subnet
-
-Modify NSG rules in azurerm_network_security_group resource
-
-Provisioning:
-
-Edit setup.sh for custom post-deployment configuration
-
-Add additional provisioner blocks as needed
-
-Outputs
 After successful deployment, Terraform will display:
 
-vm_private_ip: Private IP address of the VM
+- vm_private_ip: Private IP address of the VM
+- vm_public_ip: Public IP address for SSH access
+- ssh_command: Pre-formatted SSH connection command
 
-vm_public_ip: Public IP address for SSH access
+## Clean Up
 
-ssh_command: Pre-formatted SSH connection command
-
-Clean Up
 To destroy all created resources:
-
 bash
 terraform destroy
-Troubleshooting
-Common Issues
-SSH Connection Failed:
 
-Verify the public IP is correct
 
-Check that azurekey private key exists locally
+## Troubleshooting
 
-Confirm NSG allows SSH (port 22) from your IP
+### Common Issues
 
-Public IP Not Showing:
+1. *SSH Connection Failed*:
+   - Verify the public IP is correct
+   - Check that azurekey private key exists locally
+   - Confirm NSG allows SSH (port 22) from your IP
 
-Dynamic IPs may take a few minutes to appear
+2. *Public IP Not Showing*:
+   - Dynamic IPs may take a few minutes to appear
+   - Run terraform refresh to update state
 
-Run terraform refresh to update state
+3. *Provisioning Errors*:
+   - Check /var/log/cloud-init-output.log on the VM
+   - Review Azure serial console output
 
-Provisioning Errors:
+## Security Notes
 
-Check /var/log/cloud-init-output.log on the VM
+- By default, SSH is open to all IP addresses (0.0.0.0/0)
+- For production environments, restrict source_address_prefix in the NSG rule
+- Consider using Azure Key Vault for SSH key management
 
-Review Azure serial console output
+## License
 
-Security Notes
-By default, SSH is open to all IP addresses (0.0.0.0/0)
-
-For production environments, restrict source_address_prefix in the NSG rule
-
-Consider using Azure Key Vault for SSH key management
+[MIT License](LICENSE)
