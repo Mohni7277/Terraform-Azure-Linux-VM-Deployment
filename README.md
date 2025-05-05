@@ -113,7 +113,3 @@ terraform destroy
 - By default, SSH is open to all IP addresses (0.0.0.0/0)
 - For production environments, restrict source_address_prefix in the NSG rule
 - Consider using Azure Key Vault for SSH key management
-
-## License
-
-[MIT License](LICENSE)
