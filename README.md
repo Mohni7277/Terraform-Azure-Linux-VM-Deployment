@@ -55,7 +55,7 @@ This Terraform configuration deploys a Linux virtual machine (VM) in Microsoft A
 9. *Connect to VM* (after deployment completes):
    bash
 
-   ssh -i azurekey mohni@(public-ip)
+   ssh -i azurekey mohni@<public-ip>
    
 
 ## Configuration
