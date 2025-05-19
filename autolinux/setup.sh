@@ -49,6 +49,7 @@ curl -fsSL https://get.docker.com | sh || error_exit "Failed to install Docker"
 usermod -aG docker mohni || error_exit "Failed to add user to docker group"
 systemctl enable docker || echo "Warning: Failed to enable Docker"
 systemctl start docker || error_exit "Failed to start Docker"
+systemctl status docker 
 
 # 5. Install Monitoring Agent (Azure example)
 echo "[5/8] Skipping monitoring agent installation..."
